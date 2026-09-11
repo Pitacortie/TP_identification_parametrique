@@ -1,19 +1,21 @@
+run('definit_param.m')
+
 %%Definicient des Polynomes%%
 s = tf('s');
 
-F1 = k0 - k1 - b1 * s + b0 * s + m1 * s * s;
-F2 = k1 + b1 * s;
+F1 = m1 *s *s +(b0 + b1) * s + k0 + k1;
+F2 = -(b1 * s + k1);
 F3 = F2;
 F4 = m2 * s * s + k1 + b1 * s + k2 + b2 * s;
-F5 = k2 + b2 * s;
+F5 = -(b2*s+k2);
 F6 = F5;
 F7 = k2 + b2 * s + m3 * s * s;
 
 %Definition des Fonctions de transfert%
 
-G1 = minreal(1/(F1 - F3/(-F4 +(F6*F5/F7))));
-G2 = minreal(F3/(-F4 +(F6*F5/F7)) * G1);
-G3 = minreal(F6/F7 * G2);
+G1 = minreal(1/(F1 - F3*F2/(F4 -(F6*F5/F7))));
+G2 = minreal(-F3/(F4 -(F6*F5/F7)) * G1);
+G3 = minreal(-F6/F7 * G2);
 
 %Generation des positions et des vitesses
 
@@ -33,4 +35,4 @@ gamma = step(G3, t);
 vit_gamma = step(G3 * s, t);
 acc_gamma = step(G3 * s * s, t);
 
-f = alpha * F1 - beta * F2;
+f = ones(size(alpha));
