@@ -1,4 +1,4 @@
-run('definit_param.m')
+
 
 %%Definicient des Polynomes%%
 s = tf('s');

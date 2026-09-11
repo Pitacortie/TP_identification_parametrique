@@ -1,6 +1,11 @@
 clear all;
 close all;
 
+quanti = true;
+pos_q = 10 * 1e-6;
+vit_q = 0.1 * 1e-3;
+acc_q = 1 * 1e-3;
+
 run("definit_param.m");
 run("simule_systeme.m");
 run ("identifie_parametre.m");
