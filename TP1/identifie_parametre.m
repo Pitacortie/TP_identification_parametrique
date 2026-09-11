@@ -16,7 +16,15 @@ for k = 1:numel(list_idx)
     else
          x = [pos_q*round(alpha(idx)*1/pos_q) pos_q*round(beta(idx)*1/pos_q) pos_q*round(gamma(idx)*1/pos_q) vit_q*round(vit_alpha(idx)*1/vit_q) vit_q*round(vit_beta(idx)*1/vit_q) vit_q*round(vit_gamma(idx)*1/vit_q) acc_q*round(acc_alpha(idx)*1/acc_q) acc_q*round(acc_beta(idx)*1/acc_q) acc_q*round(acc_gamma(idx)*1/acc_q)];
     end
-
+    x_filt = filtfilt([1 u-1], u, x);
+    figure(1);
+    plot([1:1:9],x_filt);
+    hold on;
+    plot([1:1:9],x);
+    hold off;
+    if(filter == true)
+        x = x_filt;
+    end
     A = [A ; Phi(x)];
     Y = [Y; -1;0;0];
 end
