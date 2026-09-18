@@ -5,12 +5,12 @@
 
 close all
 clc
-clear all; %% efface toutes les variables existantes
-load releve_vit_cste_axe2; %% charge les relevés expérimentaux
+%%clear all; %% efface toutes les variables existantes
+load releve_vit_cste_axe1; %% charge les relevÃ©s expÃ©rimentaux
 
-%% Paramètres connus a priori:
+%% ParamÃ¨tres connus a priori:
 kc2=0.0525; %% constante de couple de l'axe 2.
-N2=4.5; %% inverse du rapport de réduction de l'axe 2.
+N2=4.5; %% inverse du rapport de rÃ©duction de l'axe 2.
 
 kc1=0.0525;
 N1=20.25;
@@ -22,9 +22,9 @@ s = size(q1);
 A = [];
 y = [];
 for k=1:s(1)
-    a = [cos(q2(k)) sign(qp2(k)) qp2(k) 1];
+    a = [cos(q1(k)) sign(qpfil1(k)) qpfil1(k) 1];
     A = [A ; a];
-    y = [y ; N2*kc2*i2(k)];
+    y = [y ; N1*kc1*ifil1(k)];
 end
 
 disp("Size de A:");
@@ -35,23 +35,23 @@ disp("rank de A");
 disp(rank(A));
 disp("Condition de A:");
 disp(cond(A));
-%% Calcul des paramètres
-p2 = (A' * A) \ (A' * y)
+%% Calcul des paramÃ¨tres
+p1fil = (A' * A) \ (A' * y)
 
-%% Affichage des résultats.
+%% Affichage des rÃ©sultats.
 format long
-disp('Paramètres estimés à partir des données brutes :');
-p2'
+disp('ParamÃ¨tres estimÃ©s Ã  partir des donnÃ©es brutes :');
+p1fil'
 
 figure(1)
 clf; %% clear figure
-h=plot3(q2,qp2,kc2*N2*i2,'x');
+h=plot3(q1,qpfil1,kc1*N1*ifil1,'x');
 set(h,'LineWidth',0.5);
-hold on; %% permet de conserver le graphique et d'en ajouter d'autres sur la même fig.
-h=plot3(q2,qp2,A*p2,'.');
+hold on; %% permet de conserver le graphique et d'en ajouter d'autres sur la mÃªme fig.
+h=plot3(q1,qpfil1,A*p1fil,'.');
 set(h,'LineWidth',1.5);
-title('Résultats de l''identification sans filtrage');
-legend('\Gamma_2 non filtré', 'modèle');
+title('RÃ©sultats de l''identification sans filtrage');
+legend('\Gamma_2 non filtrÃ©', 'modÃ¨le');
 grid on;
 xlabel('$q_2$','Interpreter','latex')
 ylabel('$\dot{q}_2$','Interpreter','latex')
@@ -61,13 +61,13 @@ zlabel('$\tau$','Interpreter','latex')
 %% Extra plots to check the quality of the identification
 
 figure;
-qqplot(A*p2-y)
+qqplot(A*p1fil-y)
 grid on
 axis equal
 axis square
 
 figure;
-plot(y,A*p2,'.')
+plot(y,A*p1fil,'.')
 hold on
 plot([min(y) max(y)],[min(y) max(y)],'--g','LineWidth',2)
 grid on

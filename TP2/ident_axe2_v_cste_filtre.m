@@ -5,7 +5,7 @@
 
 close all
 clc
-clear all; %% efface toutes les variables existantes
+%%clear all; %% efface toutes les variables existantes
 load releve_vit_cste_axe2; %% charge les relevés expérimentaux
 
 %% Paramètres connus a priori:
@@ -36,19 +36,19 @@ disp(rank(A));
 disp("Condition de A:");
 disp(cond(A));
 %% Calcul des paramètres
-p = (A' * A) \ (A' * y)
+p2_fil = (A' * A) \ (A' * y)
 
 %% Affichage des résultats.
 format long
 disp('Paramètres estimés à partir des données brutes :');
-p'
+p2_fil'
 
 figure(1)
 clf; %% clear figure
 h=plot3(q2,qpfil2,kc2*N2*ifil2,'x');
 set(h,'LineWidth',0.5);
 hold on; %% permet de conserver le graphique et d'en ajouter d'autres sur la même fig.
-h=plot3(q2,qpfil2,A*p,'.');
+h=plot3(q2,qpfil2,A*p2_fil,'.');
 set(h,'LineWidth',1.5);
 title('Résultats de l''identification sans filtrage');
 legend('\Gamma_2 non filtré', 'modèle');
@@ -61,13 +61,13 @@ zlabel('$\tau$','Interpreter','latex')
 %% Extra plots to check the quality of the identification
 
 figure;
-qqplot(A*p-y)
+qqplot(A*p2_fil-y)
 grid on
 axis equal
 axis square
 
 figure;
-plot(y,A*p,'.')
+plot(y,A*p2_fil,'.')
 hold on
 plot([min(y) max(y)],[min(y) max(y)],'--g','LineWidth',2)
 grid on
